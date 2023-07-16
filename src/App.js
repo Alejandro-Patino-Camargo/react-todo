@@ -1,28 +1,14 @@
-import React from "react";
-
-const list = [
-  {
-    id: "0",
-    title: "study vim shortcuts",
-    prority: "1",
-  },
-];
+import * as React from "react";
+import TodoList from "./TodoList.js";
+import AddTodoForm from "./AddTodoForm.js";
 
 function App() {
-  const todoList = list.map(function (item) {
-    return (
-      <li key={item.id}>
-        <span>ID:{item.id} </span>
-        <span>{item.title}</span>
-        <span> - priority {item.prority}</span>
-      </li>
-    );
-  });
-
   return (
     <div>
-      <h1>Todo List</h1>
-      <ul>{todoList}</ul>
+      <h1>My Hacker Stories</h1>
+      <AddTodoForm />
+      <TodoList />
+      <hr />
     </div>
   );
 }
