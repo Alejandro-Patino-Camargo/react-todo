@@ -1,6 +1,7 @@
 import React from "react";
+import TodoListItem from "./TodoListItem";
 
-const list = [
+export const list = [
   {
     title: "vim cheat sheet",
     author: "some nerd",
@@ -19,20 +20,11 @@ const list = [
   },
 ];
 
-function TodoList() {
+function TodoList(props) {
   return (
     <ul>
-      {list.map(function (item) {
-        return (
-          <li key={item.objectID}>
-            <span>
-              <a href={item.url}>{item.title}</a>
-            </span>
-            <span> by {item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-          </li>
-        );
+      {props.list.map(function (item) {
+        return <TodoListItem key={item.objectID} item={item} />;
       })}
     </ul>
   );
