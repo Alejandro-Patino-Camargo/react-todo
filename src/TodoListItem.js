@@ -1,9 +1,12 @@
 import React from "react";
 
-function TodoListItem(props) {
-  const { item } = props;
+function TodoListItem({ item, onRemoveTodo }) {
+  const handleRemoveItem = () => {
+    onRemoveTodo(item);
+  };
+
   return (
-    <div>
+    <>
       <li>
         <span>
           <a href={item.url}>{item.title}</a>
@@ -11,8 +14,11 @@ function TodoListItem(props) {
         <span> {item.author}</span>
         <span>{item.num_comments}</span>
         <span>{item.points}</span>
+        <button type="button" onClick={handleRemoveItem}>
+          Remove
+        </button>
       </li>
-    </div>
+    </>
   );
 }
 
