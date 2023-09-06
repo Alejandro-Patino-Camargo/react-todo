@@ -1,33 +1,28 @@
-import React from "react";
-import { InputWithLabel } from "./inputWithLable";
+import React, { useState } from "react";
 
-function AddTodoForm(props) {
-  const { addTodo } = props;
-  const [todoTitle, setTodoTitle] = React.useState("");
+function AddTodoForm({ addTodo, addTodoAirtable }) {
+  const [newTodo, setNewTodo] = useState("");
 
-  function handleTitleChange(event) {
-    const newTodoTitle = event.target.value;
-    setTodoTitle(newTodoTitle);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (newTodo.trim() === "") return;
 
-  function handleAddTodo(event) {
-    event.preventDefault();
-    const todoTitle = event.target.elements.title.value;
-
-    addTodo({ title: todoTitle, id: Date.now() });
-    setTodoTitle("");
-  }
+    const newTodoData = await addTodoAirtable(newTodo);
+    if (newTodoData) {
+      addTodo(newTodoData);
+      setNewTodo("");
+    }
+  };
 
   return (
     <div>
-      <form onSubmit={handleAddTodo}>
-        <InputWithLabel
-          id="todoTitle"
-          value={todoTitle}
-          onChange={handleTitleChange}
-        >
-          Title{" "}
-        </InputWithLabel>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Add a new todo"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+        />
         <button type="submit">Add</button>
       </form>
     </div>
