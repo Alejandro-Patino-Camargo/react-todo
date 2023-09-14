@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
-import TodoList from "./components/TodoList.js";
-import AddTodoForm from "./components/AddTodoForm.js";
+import TodoList from "./TodoList.js";
+import AddTodoForm from "./AddTodoForm.js";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [todoList, setTodoList] = useState([]);
 
-  const REACT_APP_AIRTABLE_API_TOKEN =
-    "patYREWD3ckcY90Py.dd45bc0561b5a06228c2f304411ccfb996a2b0e6207a7c93fc3e8ad83f366ea8";
-  const REACT_APP_AIRTABLE_BASE_ID = "appRWgiocxtkiK6vc";
-  const REACT_APP_TABLE_NAME = "Default";
+  const AIRTABLE_API_TOKEN = process.env.AIRTABLE_API_TOKEN;
+  const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+  const TABLE_NAME = process.env.TABLE_NAME;
 
   const fetchData = async () => {
     try {
       const options = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${REACT_APP_AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
         },
       };
 
-      const url = `https://api.airtable.com/v0/${REACT_APP_AIRTABLE_BASE_ID}/${REACT_APP_TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {

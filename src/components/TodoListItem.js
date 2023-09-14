@@ -1,8 +1,14 @@
 import React from "react";
+import propTypes from "prop-types";
 
 function TodoListItem({ item, onRemoveTodo }) {
   const handleRemoveItem = () => {
     onRemoveTodo(item);
+  };
+
+  TodoListItem.propTypes = {
+    item: propTypes.object,
+    onRemoveTodo: propTypes.func,
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import propTypes from "prop-types";
 
 function AddTodoForm({ addTodo, addTodoAirtable }) {
   const [newTodo, setNewTodo] = useState("");
@@ -12,6 +13,10 @@ function AddTodoForm({ addTodo, addTodoAirtable }) {
       addTodo(newTodoData);
       setNewTodo("");
     }
+  };
+
+  AddTodoForm.propTypes = {
+    onAddTodo: propTypes.func,
   };
 
   return (
