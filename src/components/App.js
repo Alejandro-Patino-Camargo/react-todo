@@ -56,7 +56,7 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${REACT_APP_AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
         },
         body: JSON.stringify({
           fields: {
@@ -65,7 +65,7 @@ function App() {
         }),
       };
 
-      const url = `https://api.airtable.com/v0/${REACT_APP_AIRTABLE_BASE_ID}/${REACT_APP_TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {
