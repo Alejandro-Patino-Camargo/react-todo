@@ -1,3 +1,4 @@
+import "./AddTodoForm.module.css";
 import React, { useState } from "react";
 import propTypes from "prop-types";
 
@@ -20,7 +21,7 @@ function AddTodoForm({ addTodo, addTodoAirtable }) {
   };
 
   return (
-    <div>
+    <div className="todoForm">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
