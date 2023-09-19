@@ -1,11 +1,20 @@
 import React from "react";
 import TodoContainer from "./components/TodoContainer";
-import "./app.css";
+import Grid from "@mui/material/Grid";
 
 function App() {
   return (
-    <div className="App">
-      <TodoContainer tableName="Your Todos" />
+    <div className="App" style={{ fontFamily: "verdana" }}>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <TodoContainer tableName="Your Todos" />
+      </Grid>
     </div>
   );
 }

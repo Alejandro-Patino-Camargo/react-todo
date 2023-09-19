@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import TodoList from "./TodoList.js";
 import AddTodoForm from "./AddTodoForm.js";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import PersistentDrawerLeft from "./Sidebar.js";
+import Checkbox from "@mui/material/Checkbox";
+import renderTagIcon from "./TagIcon.js";
 
 function TodoContainer() {
   const [isLoading, setIsLoading] = useState(true);
   const [todoList, setTodoList] = useState([]);
-  const [sortOption, setSortOption] = useState("newest");
+  const [sortOption, setSortOption] = useState("oldest");
+  const [tagOptions] = useState(["University", "Work", "Home", "Misc"]);
 
   const AIRTABLE_API_TOKEN =
     "patYREWD3ckcY90Py.dd45bc0561b5a06228c2f304411ccfb996a2b0e6207a7c93fc3e8ad83f366ea8";
@@ -32,11 +42,13 @@ function TodoContainer() {
       const data = await response.json();
       console.log(data);
 
-      // Sorting data by createdTime in ascending or descending order
       const sorted = data.records
         .map((record) => ({
           id: record.id,
           title: record.fields.title,
+          notes: record.fields.notes,
+          tag: record.fields.tag,
+          dueDate: record.fields.dueDate,
           createdTime: new Date(record.createdTime),
         }))
         .sort((a, b) => {
@@ -59,7 +71,7 @@ function TodoContainer() {
     fetchData();
   }, [sortOption]);
 
-  const addTodoAirtable = async (newTodoTitle) => {
+  const addTodoAirtable = async (newTodoData) => {
     try {
       const options = {
         method: "POST",
@@ -69,7 +81,10 @@ function TodoContainer() {
         },
         body: JSON.stringify({
           fields: {
-            title: newTodoTitle,
+            title: newTodoData.title,
+            notes: newTodoData.notes,
+            tag: newTodoData.tag,
+            dueDate: newTodoData.dueDate,
           },
         }),
       };
@@ -85,13 +100,18 @@ function TodoContainer() {
       const data = await response.json();
       console.log("New todo added to table:", data.fields.title);
 
-      return { id: data.id, title: data.fields.title };
+      return {
+        id: data.id,
+        title: data.fields.title,
+        notes: data.fields.notes,
+        tag: data.fields.tag,
+        dueDate: data.fields.dueDate,
+      };
     } catch (error) {
       console.error(error.message);
       return null;
     }
   };
-
   const addTodo = (newTodo) => {
     setTodoList([...todoList, newTodo]);
   };
@@ -134,28 +154,116 @@ function TodoContainer() {
     }
   }, [todoList, isLoading]);
 
+  function formatDate(dueDate) {
+    if (!dueDate) {
+      return "";
+    }
+    const date = new Date(dueDate);
+    const options = {
+      month: "long",
+      day: "numeric",
+    };
+
+    return date.toLocaleDateString(undefined, options);
+  }
+
   return (
-    <div>
-      <h1>Todo List</h1>
-      <AddTodoForm addTodo={addTodo} addTodoAirtable={addTodoAirtable} />
-
-      <label htmlFor="sortOption">Sort list: </label>
-      <select
-        id="sortOption"
-        value={sortOption}
-        onChange={(e) => setSortOption(e.target.value)}
+    <div className="TodoContainer" style={{ width: "1000px" }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="100vh"
       >
-        <option value="newest">oldest</option>
-        <option value="oldest">newest</option>
-      </select>
-
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <TodoList list={todoList} onRemoveTodo={removeTodo} />
-      )}
-
-      <hr />
+        <Box display="flex" alignItems="center">
+          <label
+            htmlFor="sortOption"
+            style={{
+              paddingRight: "10px",
+              fontSize: "16px",
+              fontWeight: "bold",
+            }}
+          >
+            Sort list:
+          </label>
+          <select
+            id="sortOption"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            style={{ fontSize: "16px", padding: "5px", borderRadius: "4px" }}
+          >
+            <option value="newest">Oldest</option>
+            <option value="oldest">Newest</option>
+          </select>
+        </Box>
+        {isLoading ? (
+          <p style={{ fontSize: "18px", margin: "20px" }}>Loading...</p>
+        ) : (
+          <>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      Task
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      Note
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      Tag
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      Due Date
+                    </TableCell>
+                    <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                      Done
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {todoList.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell style={{ fontSize: "16px" }}>
+                        {item.title}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "16px" }}>
+                        {item.notes}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "16px" }}>
+                        {renderTagIcon(item.tag)}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "16px" }}>
+                        {formatDate(item.dueDate)}
+                      </TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={false}
+                          onChange={() => removeTodo(item)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <hr
+              style={{
+                margin: "20px 0",
+                border: "none",
+                borderBottom: "1px solid #ccc",
+              }}
+            />
+          </>
+        )}
+        <AddTodoForm
+          addTodo={addTodo}
+          addTodoAirtable={addTodoAirtable}
+          tagOptions={tagOptions}
+        />
+      </Box>
+      <PersistentDrawerLeft />
     </div>
   );
 }
