@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 
 function App() {
   return (
-    <div className="App" style={{ fontFamily: "verdana" }}>
+    <div className="App" style={{ fontFamily: "mono" }}>
       <Grid
         container
         spacing={0}

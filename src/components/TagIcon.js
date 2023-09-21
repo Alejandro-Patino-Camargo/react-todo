@@ -12,7 +12,7 @@ const tagColors = {
     text: "#FF8C00",
   },
   Misc: {
-    background: "#f2d5ae", // Slightly lighter brown
+    background: "#f2d5ae",
     text: "#8B4513",
   },
 };

@@ -9,19 +9,22 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import PersistentDrawerLeft from "./Sidebar.js";
 import Checkbox from "@mui/material/Checkbox";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import IconButton from "@mui/material/IconButton";
 import renderTagIcon from "./TagIcon.js";
 
 function TodoContainer() {
   const [isLoading, setIsLoading] = useState(true);
   const [todoList, setTodoList] = useState([]);
   const [sortOption, setSortOption] = useState("oldest");
-  const [tagOptions] = useState(["University", "Work", "Home", "Misc"]);
+  const [selectedTag, setSelectedTag] = useState("All"); // Added selectedTag state
+  const [tagOptions] = useState(["All", "University", "Work", "Home", "Misc"]);
 
   const AIRTABLE_API_TOKEN =
     "patYREWD3ckcY90Py.dd45bc0561b5a06228c2f304411ccfb996a2b0e6207a7c93fc3e8ad83f366ea8";
   const AIRTABLE_BASE_ID = "appRWgiocxtkiK6vc";
   const TABLE_NAME = "Default";
-
   const fetchData = async () => {
     try {
       const options = {
@@ -52,9 +55,14 @@ function TodoContainer() {
           createdTime: new Date(record.createdTime),
         }))
         .sort((a, b) => {
-          return sortOption === "newest"
-            ? a.createdTime.getTime() - b.createdTime.getTime()
-            : b.createdTime.getTime() - a.createdTime.getTime();
+          const dateA = a.dueDate ? new Date(a.dueDate) : null;
+          const dateB = b.dueDate ? new Date(b.dueDate) : null;
+
+          if (sortOption === "newest") {
+            return dateB - dateA || a.createdTime - b.createdTime;
+          } else {
+            return dateA - dateB || a.createdTime - b.createdTime;
+          }
         });
 
       setTodoList(sorted);
@@ -112,8 +120,9 @@ function TodoContainer() {
       return null;
     }
   };
+
   const addTodo = (newTodo) => {
-    setTodoList([...todoList, newTodo]);
+    setTodoList([newTodo, ...todoList]);
   };
 
   const removeTodo = async (itemToRemove) => {
@@ -148,12 +157,6 @@ function TodoContainer() {
     }
   };
 
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-    }
-  }, [todoList, isLoading]);
-
   function formatDate(dueDate) {
     if (!dueDate) {
       return "";
@@ -177,25 +180,28 @@ function TodoContainer() {
         minHeight="100vh"
       >
         <Box display="flex" alignItems="center">
-          <label
-            htmlFor="sortOption"
+          <IconButton
+            onClick={() => setSortOption("oldest")}
             style={{
-              paddingRight: "10px",
               fontSize: "16px",
-              fontWeight: "bold",
+              padding: "5px",
+              borderRadius: "4px",
             }}
+            color={sortOption === "oldest" ? "primary" : "default"}
           >
-            Sort list:
-          </label>
-          <select
-            id="sortOption"
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-            style={{ fontSize: "16px", padding: "5px", borderRadius: "4px" }}
+            <ArrowUpwardIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => setSortOption("newest")}
+            style={{
+              fontSize: "16px",
+              padding: "5px",
+              borderRadius: "4px",
+            }}
+            color={sortOption === "newest" ? "primary" : "default"}
           >
-            <option value="newest">Oldest</option>
-            <option value="oldest">Newest</option>
-          </select>
+            <ArrowDownwardIcon />
+          </IconButton>
         </Box>
         {isLoading ? (
           <p style={{ fontSize: "18px", margin: "20px" }}>Loading...</p>

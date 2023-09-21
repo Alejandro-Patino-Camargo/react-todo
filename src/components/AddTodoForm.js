@@ -57,7 +57,8 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
           onChange={(e) => setNewTodo(e.target.value)}
           size="small"
           style={{ marginRight: "15px" }}
-          required
+          autoComplete="off"
+          name={`field-${Math.random().toString(36).substring(7)}`}
         />
         <TextField
           type="text"
@@ -67,7 +68,9 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
           onChange={(e) => setNewNote(e.target.value)}
           size="small"
           style={{ marginRight: "15px" }}
+          autoComplete="off"
         />
+
         <FormControl
           variant="outlined"
           size="small"
@@ -86,6 +89,7 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
             ))}
           </Select>
         </FormControl>
+
         <TextField
           type="date"
           label=""
