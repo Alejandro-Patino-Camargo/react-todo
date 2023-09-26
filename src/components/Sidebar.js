@@ -20,6 +20,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
 import StarIcon from "@mui/icons-material/Star";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -143,7 +144,7 @@ export default function PersistentDrawerLeft() {
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>{getCategoryIcon(text)}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text} component={Link} to="/" />
               </ListItemButton>
             </ListItem>
           ))}
