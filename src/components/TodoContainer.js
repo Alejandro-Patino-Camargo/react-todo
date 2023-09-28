@@ -19,7 +19,6 @@ function TodoContainer() {
   const [todoList, setTodoList] = useState([]);
   const [sortOption, setSortOption] = useState("oldest");
   const [tagOptions] = useState(["University", "Work", "Home", "Misc"]);
-
   const fetchData = async () => {
     try {
       const options = {
@@ -74,8 +73,8 @@ function TodoContainer() {
   };
 
   useEffect(() => {
-    fetchData(sortOption);
-  });
+    fetchData();
+  }, [sortOption]);
 
   const addTodo = async (newTodoData) => {
     try {
@@ -107,6 +106,8 @@ function TodoContainer() {
       console.log("New todo added to table:", data.fields.title);
 
       setTodoList([data, ...todoList]);
+
+      await fetchData();
 
       return {
         id: data.id,

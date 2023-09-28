@@ -1,5 +1,5 @@
 import React from "react";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 export function InputWithLabel({
   id,
   todoTitle,
@@ -16,11 +16,11 @@ export function InputWithLabel({
   }, [isFocused]);
 
   InputWithLabel.propTypes = {
-    id: propTypes.number,
-    todoTitle: propTypes.func,
-    handleTitleChange: propTypes.func,
-    children: propTypes.string,
-    isFocused: propTypes.func,
+    id: PropTypes.exact(PropTypes.number.isRequired),
+    todoTitle: PropTypes.func,
+    handleTitleChange: PropTypes.func,
+    children: PropTypes.exact(PropTypes.string.isRequired),
+    isFocused: PropTypes.func,
   };
 
   return (
