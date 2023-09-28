@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const tagColors = {
   University: {
     background: "#B0E0E6",
@@ -19,6 +21,9 @@ const tagColors = {
 
 export default function renderTagIcon(tagName) {
   const tagColor = tagColors[tagName];
+  if (!tagColor) {
+    return null;
+  }
   return (
     <span
       style={{
@@ -33,3 +38,7 @@ export default function renderTagIcon(tagName) {
     </span>
   );
 }
+
+renderTagIcon.propTypes = {
+  tagName: PropTypes.string.isRequired,
+};

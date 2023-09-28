@@ -18,13 +18,8 @@ function TodoContainer() {
   const [isLoading, setIsLoading] = useState(true);
   const [todoList, setTodoList] = useState([]);
   const [sortOption, setSortOption] = useState("oldest");
-  const [selectedTag, setSelectedTag] = useState("All"); // Added selectedTag state
-  const [tagOptions] = useState(["All", "University", "Work", "Home", "Misc"]);
+  const [tagOptions] = useState(["University", "Work", "Home", "Misc"]);
 
-  const AIRTABLE_API_TOKEN =
-    "patYREWD3ckcY90Py.dd45bc0561b5a06228c2f304411ccfb996a2b0e6207a7c93fc3e8ad83f366ea8";
-  const AIRTABLE_BASE_ID = "appRWgiocxtkiK6vc";
-  const TABLE_NAME = "Default";
   const fetchData = async () => {
     try {
       const options = {
@@ -33,6 +28,9 @@ function TodoContainer() {
           Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
         },
       };
+
+      const AIRTABLE_BASE_ID = "appRWgiocxtkiK6vc";
+      const TABLE_NAME = "Default";
 
       const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
       const response = await fetch(url, options);
@@ -76,10 +74,10 @@ function TodoContainer() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [sortOption]);
+    fetchData(sortOption);
+  });
 
-  const addTodoAirtable = async (newTodoData) => {
+  const addTodo = async (newTodoData) => {
     try {
       const options = {
         method: "POST",
@@ -108,6 +106,8 @@ function TodoContainer() {
       const data = await response.json();
       console.log("New todo added to table:", data.fields.title);
 
+      setTodoList([data, ...todoList]);
+
       return {
         id: data.id,
         title: data.fields.title,
@@ -119,10 +119,6 @@ function TodoContainer() {
       console.error(error.message);
       return null;
     }
-  };
-
-  const addTodo = (newTodo) => {
-    setTodoList([newTodo, ...todoList]);
   };
 
   const removeTodo = async (itemToRemove) => {
@@ -263,11 +259,7 @@ function TodoContainer() {
             />
           </>
         )}
-        <AddTodoForm
-          addTodo={addTodo}
-          addTodoAirtable={addTodoAirtable}
-          tagOptions={tagOptions}
-        />
+        <AddTodoForm addTodo={addTodo} tagOptions={tagOptions} />
       </Box>
       <PersistentDrawerLeft />
     </div>

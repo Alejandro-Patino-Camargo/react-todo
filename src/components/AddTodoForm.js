@@ -8,7 +8,7 @@ import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
+function AddTodoForm({ addTodo, tagOptions }) {
   const [newTodo, setNewTodo] = useState("");
   const [newNote, setNewNote] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
@@ -18,12 +18,12 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
     e.preventDefault();
     if (newTodo.trim() === "") return;
 
-    const newTodoData = await addTodoAirtable({
+    const newTodoData = {
       title: newTodo,
       notes: newNote || "",
       dueDate: newDueDate || null,
       tag: selectedTag || "Misc",
-    });
+    };
 
     if (newTodoData) {
       addTodo(newTodoData);
@@ -35,9 +35,8 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
   };
 
   AddTodoForm.propTypes = {
-    addTodo: propTypes.func,
-    addTodoAirtable: propTypes.func,
-    tagOptions: propTypes.array,
+    addTodo: propTypes.func.isRequired,
+    tagOptions: propTypes.array.isRequired,
   };
 
   return (
@@ -68,7 +67,6 @@ function AddTodoForm({ addTodo, addTodoAirtable, tagOptions }) {
           onChange={(e) => setNewNote(e.target.value)}
           size="small"
           style={{ marginRight: "15px" }}
-          autoComplete="off"
         />
 
         <FormControl
