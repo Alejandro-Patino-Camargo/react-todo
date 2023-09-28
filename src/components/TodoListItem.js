@@ -33,7 +33,7 @@ function TodoListItem({ item, onRemoveTodo }) {
 }
 
 TodoListItem.propTypes = {
-  item: PropTypes.object.isRequired,
+  item: PropTypes.objectOf(PropTypes.string.isRequired),
   onRemoveTodo: PropTypes.func.isRequired,
 };
 

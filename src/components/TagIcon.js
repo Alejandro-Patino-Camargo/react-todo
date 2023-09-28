@@ -40,5 +40,5 @@ export default function renderTagIcon(tagName) {
 }
 
 renderTagIcon.propTypes = {
-  tagName: PropTypes.string.isRequired,
+  tagName: PropTypes.exact([PropTypes.string.isRequired]),
 };

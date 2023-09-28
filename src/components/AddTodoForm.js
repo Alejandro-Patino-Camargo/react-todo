@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -35,8 +35,8 @@ function AddTodoForm({ addTodo, tagOptions }) {
   };
 
   AddTodoForm.propTypes = {
-    addTodo: propTypes.func.isRequired,
-    tagOptions: propTypes.array.isRequired,
+    addTodo: PropTypes.func.isRequired,
+    tagOptions: PropTypes.arrayOf(PropTypes.string.isRequired),
   };
 
   return (

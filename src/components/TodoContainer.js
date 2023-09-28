@@ -20,6 +20,11 @@ function TodoContainer() {
   const [sortOption, setSortOption] = useState("oldest");
   const [tagOptions] = useState(["University", "Work", "Home", "Misc"]);
 
+  const AIRTABLE_API_TOKEN =
+    "patYREWD3ckcY90Py.dd45bc0561b5a06228c2f304411ccfb996a2b0e6207a7c93fc3e8ad83f366ea8";
+  const AIRTABLE_BASE_ID = "appRWgiocxtkiK6vc";
+  const TABLE_NAME = "Default";
+
   const fetchData = async () => {
     try {
       const options = {
@@ -74,8 +79,8 @@ function TodoContainer() {
   };
 
   useEffect(() => {
-    fetchData(sortOption);
-  });
+    fetchData();
+  }, [sortOption]);
 
   const addTodo = async (newTodoData) => {
     try {
@@ -107,6 +112,8 @@ function TodoContainer() {
       console.log("New todo added to table:", data.fields.title);
 
       setTodoList([data, ...todoList]);
+
+      await fetchData();
 
       return {
         id: data.id,
