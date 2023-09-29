@@ -1,21 +1,20 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "../src/components/LandingPage";
 import TodoContainer from "./components/TodoContainer";
-import Grid from "@mui/material/Grid";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="App" style={{ fontFamily: "mono" }}>
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: "100vh" }}
-      >
-        <TodoContainer tableName="Your Todos" />
-      </Grid>
-    </div>
+    <Router>
+      <div className="App" style={{ fontFamily: "verdana" }}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/todos" element={<TodoContainer />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
