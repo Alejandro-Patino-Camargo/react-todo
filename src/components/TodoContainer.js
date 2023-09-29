@@ -11,16 +11,17 @@ function TodoContainer() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  console.log(process.env.REACT_APP_AIRTABLE_API_TOKEN);
   const fetchData = async () => {
     try {
       const options = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}`,
         },
       };
 
-      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {
@@ -66,7 +67,7 @@ function TodoContainer() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}`,
         },
         body: JSON.stringify({
           fields: {
@@ -78,7 +79,7 @@ function TodoContainer() {
         }),
       };
 
-      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {
@@ -106,11 +107,11 @@ function TodoContainer() {
 
   const removeTodo = async (itemToRemove) => {
     try {
-      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}/${itemToRemove.id}`;
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}/${itemToRemove.id}`;
       const options = {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}`,
         },
       };
 
