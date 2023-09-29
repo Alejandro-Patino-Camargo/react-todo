@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
+import "./AddTodoForm.css";
 
 function AddTodoForm({ addTodo, tagOptions }) {
   const [newTodo, setNewTodo] = useState("");
@@ -14,7 +8,7 @@ function AddTodoForm({ addTodo, tagOptions }) {
   const [newDueDate, setNewDueDate] = useState("");
   const [selectedTag, setSelectedTag] = useState("Misc");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (newTodo.trim() === "") return;
 
@@ -40,66 +34,43 @@ function AddTodoForm({ addTodo, tagOptions }) {
   };
 
   return (
-    <div
-      className="todoForm"
-      style={{ display: "flex", alignItems: "center", paddingLeft: "1rem" }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", alignItems: "center" }}
-      >
-        <TextField
+    <div className="todoForm">
+      <form onSubmit={handleSubmit} className="formContainer">
+        <input
           type="text"
-          label="Add a new task"
-          variant="outlined"
+          placeholder="Add a new task"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
-          size="small"
-          style={{ marginRight: "15px" }}
+          className="inputField"
           autoComplete="off"
-          name={`field-${Math.random().toString(36).substring(7)}`}
         />
-        <TextField
+        <input
           type="text"
-          label="Add a note"
-          variant="outlined"
+          placeholder="Add a note"
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
-          size="small"
-          style={{ marginRight: "15px" }}
+          className="inputField"
         />
-
-        <FormControl
-          variant="outlined"
-          size="small"
-          style={{ marginRight: "15px", minWidth: "100px" }}
+        <select
+          value={selectedTag}
+          onChange={(e) => setSelectedTag(e.target.value)}
+          className="selectField"
         >
-          <InputLabel htmlFor="tag">Tag</InputLabel>
-          <Select
-            label="Tag"
-            value={selectedTag}
-            onChange={(e) => setSelectedTag(e.target.value)}
-          >
-            {tagOptions.map((tag) => (
-              <MenuItem key={tag} value={tag}>
-                {tag}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <TextField
+          {tagOptions.map((tag) => (
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
+          ))}
+        </select>
+        <input
           type="date"
-          label=""
-          variant="outlined"
           value={newDueDate}
           onChange={(e) => setNewDueDate(e.target.value)}
-          size="small"
-          style={{ marginRight: "15px" }}
+          className="inputField"
         />
-        <IconButton type="submit" size="small">
-          <AddCircleOutlineIcon />
-        </IconButton>
+        <button type="submit" className="submitButton">
+          Add
+        </button>
       </form>
     </div>
   );
