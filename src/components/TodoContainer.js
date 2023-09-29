@@ -16,11 +16,11 @@ function TodoContainer() {
       const options = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
         },
       };
 
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {
@@ -66,7 +66,7 @@ function TodoContainer() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
         },
         body: JSON.stringify({
           fields: {
@@ -78,7 +78,7 @@ function TodoContainer() {
         }),
       };
 
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
+      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}`;
       const response = await fetch(url, options);
 
       if (!response.ok) {
@@ -106,11 +106,11 @@ function TodoContainer() {
 
   const removeTodo = async (itemToRemove) => {
     try {
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}/${itemToRemove.id}`;
+      const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.TABLE_NAME}/${itemToRemove.id}`;
       const options = {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${AIRTABLE_API_TOKEN}`,
+          Authorization: `Bearer ${process.env.AIRTABLE_API_TOKEN}`,
         },
       };
 
